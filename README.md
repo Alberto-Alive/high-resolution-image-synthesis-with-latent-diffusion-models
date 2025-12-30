@@ -22,3 +22,8 @@ The solution... obviously don't run diffusion on pixels. The actual problem is t
 - first use a pretrained autoencoder to compress images into smaller "latent" representations that still keep important information
 
 - train the diffusion model to denoise in this latent space
+
+
+**Introduction**
+
+Nothing worth your time except the part about the autoencoder and how that can be trained once and be reused in training different diffusion models in latent space - it learns a good map from image to latent code (encode) and from latent code to image (decode) and this is universal and independent from the diffusion model.
