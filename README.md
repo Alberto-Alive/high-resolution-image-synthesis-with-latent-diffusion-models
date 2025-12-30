@@ -59,3 +59,12 @@ What they complained of... AR priors often force a nasty trade-off:
 
 Diffusion models are currently top-tier for quality and density modeling, especially with a U-Net backbone and some training tricks.
 But: training and sampling in pixel space is very costly because the model processes full res images for many steps and compute heavy gradients.
+
+4) Let's see why this research paper brings a better approach
+I mean... they are combining the best:
+- use a strong autoencoder but don't compress too aggressively so details survive
+- run the diffusion model in latent space which is lower-dimensional -> cheaper training + faster inference with little quality loss. 
+- unlike some prior work that trains the autoencoder and generative model together (which requires delicate balancing) they keep it simpler: train autoencoder first then diffusion which gives more faithful reconstructions.
+
+In plain terms: 
+Other latent methods often need extreme compression or huge AR models. pixel diffusion is high quality but expensive. LDMs aim to keep quality while cutting compute by doing diffusion in a well-chosen latent space.
