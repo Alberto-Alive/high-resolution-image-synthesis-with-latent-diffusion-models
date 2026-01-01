@@ -78,5 +78,17 @@ The author proposed splitting the heavy training normally done directly on full-
 - train the diffusion model to generate images in that latent space instead of pixel space. The final image is derived from the generated latent that is then decoded by the autoencoder's decoder.
 
 *Perceptual Image Compression*
+1. Autoencoder = "zip and unzip" for images
 
+- starting from an imgae x (big grid of RGB pixels):
+x ∈ ℝ^(H×W×3)
+- then the encoder E zips it into a smaller grid ("latent")
+z = E(x) ∈ ℝ^(h×w×c)
+
+- te decoder D unzips it into an image:
+x̃ = D(z) = D(E(x)) 
+
+In short: omage -> compact feature map -> reconstructed image
+
+2. 
 
