@@ -85,7 +85,7 @@ x ∈ ℝ^(H×W×3)
 - then the encoder E zips it into a smaller grid ("latent")
 z = E(x) ∈ ℝ^(h×w×c)
 
-- te decoder D unzips it into an image:
+- the decoder D unzips it into an image:
 x̃ = D(z) = D(E(x)) 
 
 In short: omage -> compact feature map -> reconstructed image
