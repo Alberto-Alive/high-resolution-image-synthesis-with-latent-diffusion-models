@@ -90,5 +90,27 @@ x̃ = D(z) = D(E(x))
 
 In short: omage -> compact feature map -> reconstructed image
 
-2. 
+2.  Downsampling factor f = by how much to shrink the image
+
+The paper has a shrink factor as follows:
+
+f = H/h =W/w where H and W are the height and width of the original image and h and w are the height and width of the latent representation.
+
+so if f = 3 then h = H/3 and w = W/3
+
+3. Why pixel losses aren't enough?
+
+p.s. 
+
+L1 = sum of absolute values 
+∥e∥1​=i∑​∣ei​∣
+
+i.e. simply add up absolute errors between pixels (generated vs real image)
+
+
+L2 = Euclidean length (straight length ... the squared version for loss)
+∥e∥2​=sqrt(i∑​(ei​)2​)
+
+
+![Why the name L1?](image.png)
 
