@@ -68,3 +68,15 @@ I mean... they are combining the best:
 
 In plain terms: 
 Other latent methods often need extreme compression or huge AR models. pixel diffusion is high quality but expensive. LDMs aim to keep quality while cutting compute by doing diffusion in a well-chosen latent space.
+
+**Methods**
+The author proposed splitting the heavy training normally done directly on full-size pixels.
+1) Compression stage (autoencoder)
+- we train an autoencoder that leanrs to turn an image into a smaller "latent" version and then reconsruct it. The key idea is to have the latent space keep what humans care about visually ("a perceptually equivalent reconstruction") that has a lower domensional space.
+
+2) Generation stage (diffusion):
+- train the diffusion model to generate images in that latent space instead of pixel space. The final image is derived from the generated latent that is then decoded by the autoencoder's decoder.
+
+*Perceptual Image Compression*
+
+
