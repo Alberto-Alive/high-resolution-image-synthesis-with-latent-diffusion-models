@@ -200,8 +200,24 @@ t ~ Uniform{1,...,T}
 Why random t?
 So the model learns to denoise at all noise levels,not just one.
 
-5) xt
+5) xt = noisy version of x at noise level t
 
+This means the img x but after noise was added corresponding to step t
+
+
+6) ϵθ(xt,t)
+
+This is the model's output
+- ϵθ means the model (a neural network) with parameters θ that takes inputs xt and t and outputs predicted noise of same shape as ϵ
+
+Why the θ?
+Because training is about finding the best θ (model parameters) that minimize the loss.
+
+7) ∥⋅∥2​2​ (squared L2 norm)
+![formula](image-2.png)
+
+This means: take the difference at every pixel/channel, square it and sum it up. Is simply the mean squared error
+The forward process creates xt from x and ϵ. 
 **Personal Thoughts so far**
 
 I really feel that a few things are misleading but regardless, what this paper seems to add new is literally removing pixels that contribute to details humans cannot perceive then run the diffusion on a better dataset... so although it seems that the algorithm is a morecomplex ai algorithm.. all it does is data processing via ai (the autoencoder).
