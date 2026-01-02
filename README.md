@@ -234,3 +234,6 @@ Diffusion models can be taught to generate images with guidance - not just rando
 
 To do this, the denoising network us upgraded from taking only (zt, t) to taking (zt, t, y) so it denoises while listening to the condition.
 Because conditioning beyond simple class labels hasn't been explored much for diffusion, the paper makes conditioning more powerful by adding cross-attention inside the U-Net: a separate encoder τθ first turns the condition y (like a text prompt) into a set of features and cross-attention lets the U-Net's internal features selectiely focus on the most relevant parts of those condition features at each denoising step. Training stays the same idea as before - predict the noise  - but now the prediction is forced to be consistent with the condition and both the condition encoder τθ and the denoiser U-Net are trained together; for text, τθ can be a transformer. So the idea with cross attention is to build connections between words and different parts of the image and beacuse the text is embedded via cross-attention it will reflect in the image generation to be close to what the humans want to achieve: i.e. "dog on a cloud" would make the model focus on the dog and one cloud and won't make a dog randomly arround clouds. 
+
+
+Let's debunk the maths formulas:
