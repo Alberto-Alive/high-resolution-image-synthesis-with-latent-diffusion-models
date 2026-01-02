@@ -237,3 +237,15 @@ Because conditioning beyond simple class labels hasn't been explored much for di
 
 
 Let's debunk the maths formulas:
+![formula](image-4.png)
+
+Meaning: we run the condition y through an encoder τ to turn it into a table of numbers
+
+τθ (y) is like a list of M ‘tokens’ (chunks) each represented by 𝑑𝜏 numbers (for text: tokens ~= words/subwords)
+
+Next is the cross attention formula that is the same scaled dot-produt attention like in Transformers.
+
+Attention (Q,K,V) = softmax((QxK^T)/(sqrt(d)))xV
+
+in this paper though, we get Q from the U-Net features (WQ​ϕi​(zt​))
+K and V come from the condition encoder, where K=WK​τ(y) and V=WV​τ(y). Also in practice it's actually multi-head..just like Transformers
