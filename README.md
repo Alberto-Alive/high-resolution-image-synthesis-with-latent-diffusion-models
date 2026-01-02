@@ -163,6 +163,27 @@ Let's explain the formula:
 
 ![Ldm](image-1.png)
 
+1) Ldm 
+Ldm = "loss" (a number you minimize during training)
+subscript DM = "Diffusion Model" (just a label)
+
+2) E..[⋅] (the expectation)
+This is the big one.
+𝐸 means average value.
+
+The subscript tells you what you’re averaging over.
+
+So:
+
+Ex,ϵ,t​[something]
+
+means to sample x,ϵ,t many times and average "something" over those samples.
+
+Why write it this way?
+Because the training is stochastic (dealing with randomness and probability): you don't train one image/noise/timestep - you train all of them so you define the objesctive as an average over random sampling process.
+
+In code this expectation becomes: average loss over a minibatch.
+
 **Personal Thoughts so far**
 
 I really feel that a few things are misleading but regardless, what this paper seems to add new is literally removing pixels that contribute to details humans cannot perceive then run the diffusion on a better dataset... so although it seems that the algorithm is a morecomplex ai algorithm.. all it does is data processing via ai (the autoencoder).
