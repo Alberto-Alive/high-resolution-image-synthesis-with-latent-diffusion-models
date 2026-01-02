@@ -184,6 +184,24 @@ Because the training is stochastic (dealing with randomness and probability): yo
 
 In code this expectation becomes: average loss over a minibatch.
 
+3) ϵ∼N(0,1)
+- “∼” means is sampled from
+- N(0,1) is a normal (Gaussian) distribution with mean 0 and variance 1
+In practice ϵ isn’t a single number; it's an entire noise image/tensor same shape as x. people still write N(0,1) as shorthand for “standard normal noise in every component”.
+
+Why specify it?
+Because the forward noising process uses Gaussian noise..
+
+4) t(the timestep)
+They don't write the distribution here in your line but the paragraph says:
+t is sampled uniformly from {1, ...,T}
+So you should mentally read: 
+t ~ Uniform{1,...,T}
+Why random t?
+So the model learns to denoise at all noise levels,not just one.
+
+5) xt
+
 **Personal Thoughts so far**
 
 I really feel that a few things are misleading but regardless, what this paper seems to add new is literally removing pixels that contribute to details humans cannot perceive then run the diffusion on a better dataset... so although it seems that the algorithm is a morecomplex ai algorithm.. all it does is data processing via ai (the autoencoder).
