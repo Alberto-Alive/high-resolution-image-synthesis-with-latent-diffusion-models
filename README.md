@@ -114,3 +114,45 @@ L2 = Euclidean length (straight length ... the squared version for loss)
 
 ![Why the name L1?](image.png)
 
+
+So using L1/L2 you often get blurry output because the model tries to be right on every pixel and somethimes it can't do that so it averages out details.
+
+4. Perceptual loss = does it look the same?
+
+This compares images using features from a pretrained vision network (often VGG)
+VGG aka Visual Geometry group introduced by 
+the University of Oxford for image classification (92.7% accuracy on ImageNet)
+
+5. Patch-based adversarial loss = "local realism checker"
+
+They also train a discriminator (GAN-style) but it judges small patches instead of the whole image that ensures the local details are sharp, have realistic textures and no "smudgy blur"
+
+6. Regularising the latent to be more like Gaussian noise - an actual trade off between image fidelity in latent space and how well the diffusion model can learn to denoise it.
+
+The main idea is to make the life easier for the diffusion model to learn to denoise latents by making them more Gaussian-like.
+
+A) KL regularization (VAE-like)
+
+Goal: make the latent space “tidy and predictable.”
+
+How: add a penalty that nudges the encoder’s latents to look like samples from a simple bell-curve distribution (standard normal).
+
+Why it helps: if latents are roughly normal-shaped, later models (like diffusion) can learn/generate in that space more easily because it’s not full of weird spikes or empty gaps.
+
+Tradeoff: push it too hard and you can lose detail (latents get forced to be too “generic”), so they keep it slight.
+
+Analogy: training everyone to speak with a similar accent so communication is easier, but not so strict that you lose meaning.
+
+B) VQ regularization (Vector Quantization, VQGAN-like)
+
+Goal: make the latent space discrete and consistent, like using a fixed vocabulary.
+
+How: instead of any continuous latent vector, each latent “patch” gets snapped to the nearest entry in a learned codebook (a set of prototype vectors).
+
+Why it helps: the model can’t invent arbitrary noisy latents; it must use stable “building blocks,” which often preserves sharpness and reduces jitter.
+
+Tradeoff: if the codebook is too small or quantization too harsh, reconstructions can show artifacts or lose subtle variation.
+
+Analogy: instead of freehand drawing every stroke, you build pictures out of Lego bricks—more stable, but limited by the pieces you have.
+
+
