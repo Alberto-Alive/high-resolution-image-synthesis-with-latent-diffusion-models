@@ -158,6 +158,11 @@ Analogy: instead of freehand drawing every stroke, you build pictures out of Leg
 
 Latent Diffusion Models are generative models that learn to create images by learning the reverse of a simple process that gradually adds Gaussian noise to data over T steps: during training a network is given a noisy version of xt of an image x at a random timestep t and learns to predict noise that was added (equivalently, how to denoise), using a squared error objective. Instead of running this expensive denoising process directly in pixel space, the paper first compresses images with a perceptual encoder-decoder pair(E,D) inot a lower dimensional latent space z = E(x) that keeps the important semantic structure while discarding imperceptible high-frequency details; diffusion is then trained in this latent space with the same noise-prediction loss but on zt rather than xt. This makes training and sampling much more eficient and allows using an image-friendly time-conditioned U-Net (mostly 2D convolutions) as the denoiser; at generation time, the model samples a latent z by denoising from noise and then produces the final image by decoding once through D.
 
+
+Let's explain the formula:
+
+![Ldm](image-1.png)
+
 **Personal Thoughts so far**
 
 I really feel that a few things are misleading but regardless, what this paper seems to add new is literally removing pixels that contribute to details humans cannot perceive then run the diffusion on a better dataset... so although it seems that the algorithm is a morecomplex ai algorithm.. all it does is data processing via ai (the autoencoder).
