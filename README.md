@@ -229,3 +229,8 @@ I really feel that a few things are misleading but regardless, what this paper s
 
 This patterns is noticeable across research papers and in fact is only logical to be so given the architecture of AI is constricted by the hardware is run on thus by matrices thus limiting the learning/representational space to an isolated part of mathematics that is matrix operations. 
 
+**Conditional Mechanisms**
+Diffusion models can be taught to generate images with guidance - not just random images - by learning a conditional distribution like "latent image z given some input y", written p(z| y), where y could be text, a semantic segmentation map, or another image for image-to image tasks.
+
+To do this, the denoising network us upgraded from taking only (zt, t) to taking (zt, t, y) so it denoises while listening to the condition.
+Because conditioning beyond simple class labels hasn't been explored much for diffusion, the paper makes conditioning more powerful by adding cross-attention inside the U-Net: a separate encoder τθ first turns the condition y (like a text prompt) into a set of features and cross-attention lets the U-Net's internal features selectiely focus on the most relevant parts of those condition features at each denoising step. Training stays the same idea as before - predict the noise  - but now the prediction is forced to be consistent with the condition and both the condition encoder τθ and the denoiser U-Net are trained together; for text, τθ can be a transformer. 
