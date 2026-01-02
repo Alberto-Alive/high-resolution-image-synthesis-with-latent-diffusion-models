@@ -213,11 +213,16 @@ This is the model's output
 Why the θ?
 Because training is about finding the best θ (model parameters) that minimize the loss.
 
+The forward process creates xt from x and ϵ.
+
 7) ∥⋅∥2​2​ (squared L2 norm)
 ![formula](image-2.png)
 
-This means: take the difference at every pixel/channel, square it and sum it up. Is simply the mean squared error
-The forward process creates xt from x and ϵ. 
+This means: take the difference at every pixel/channel, square it and sum it up. Is simply the mean squared error.
+
+![formula](image-3.png)
+The latent diffusion loss is the average squared error between the true noise ϵ and the model's predicted noise, when the model is given a noisy latent latent zt and timestep t.
+ 
 **Personal Thoughts so far**
 
 I really feel that a few things are misleading but regardless, what this paper seems to add new is literally removing pixels that contribute to details humans cannot perceive then run the diffusion on a better dataset... so although it seems that the algorithm is a morecomplex ai algorithm.. all it does is data processing via ai (the autoencoder).
