@@ -262,8 +262,15 @@ They vary the downsampling factor f ∈{1,2,4,8,16,32} where:
 
  Result: 4 and 8 bext mix of speed + quality
 
- 4.1 Image Generation with Latent Diffusion
+ 4.2 Image Generation with Latent Diffusion
 Precision: how many images the model generates look real and high-quality
 Recall: how much variety of the real dataset the model can generate
 
 Results: high precision (outputs usually look legit as there are not many broken samples) and decent recall (not collapsing to a tiny set of looks)
+
+4.3 Conditional Latent Diffusion
+
+4.3.1 Transformer Encoders for LDMs
+![KL Divergence](image-5.png) used to keep the latent codes looking roughly Gaussian
+
+- is a way to measure how different one distribution is from another and here is used as a penalty during training which constraints the latent codes withing Gaussian distribution which is easier to train (learn) on.
