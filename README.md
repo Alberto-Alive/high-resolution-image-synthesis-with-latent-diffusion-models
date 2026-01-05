@@ -290,3 +290,18 @@ Basically you slide the kernel over image multiply kernel by image grid covered 
 4.3.3 Super-Resolution with Latent Diffusion
 
 They say latent diffusion based upscaling when conditioned on low res images works 'competitively' with SR3
+
+4.5 Inpainting with latent Diffusion
+
+Term: FID = Frechet Inception Distance - how real do the generated images look compared to real images
+
+Inpainting aka fill in missing/covered parts of an image with LDM-4 is quicker than LDM-1 by 2.7 times and FID x 1.6 times improvement.
+
+5. Limitations
+
+- still slower than GAN at generation
+- not ideal when pixel perfect accuracy is needed
+
+6. Conclusion
+
+It's still not magic.
