@@ -285,3 +285,8 @@ In images:
 - convolving = sliding + multiplying + adding
 
 Basically you slide the kernel over image multiply kernel by image grid covered by the kernel then add them up to output the value of a single pixel....
+
+
+4.3.3 Super-Resolution with Latent Diffusion
+
+They say latent diffusion based upscaling when conditioned on low res images works 'competitively' with SR3
