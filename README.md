@@ -249,3 +249,21 @@ Attention (Q,K,V) = softmax((QxK^T)/(sqrt(d)))xV
 
 in this paper though, we get Q from the U-Net features (WQ​ϕi​(zt​))
 K and V come from the condition encoder, where K=WK​τ(y) and V=WV​τ(y). Also in practice it's actually multi-head..just like Transformers
+
+
+4. Experiments
+LDMs are more efficient in training and sampling and sometimes even produce better image quality than pixel based diffusion models. VQ-regularised latent spaces can slightly hurt reconstruction, but can still improve final samples.
+
+4.1 Perceptual compression tradeoffs 
+They vary the downsampling factor f ∈{1,2,4,8,16,32} where:
+ - LDM-1 = pixel diffusion (no compression)
+ - bigger f = more compression
+
+
+ Result: 4 and 8 bext mix of speed + quality
+
+ 4.1 Image Generation with Latent Diffusion
+Precision: how many images the model generates look real and high-quality
+Recall: how much variety of the real dataset the model can generate
+
+Results: high precision (outputs usually look legit as there are not many broken samples) and decent recall (not collapsing to a tiny set of looks)
