@@ -274,3 +274,14 @@ Results: high precision (outputs usually look legit as there are not many broken
 ![KL Divergence](image-5.png) used to keep the latent codes looking roughly Gaussian
 
 - is a way to measure how different one distribution is from another and here is used as a penalty during training which constraints the latent codes withing Gaussian distribution which is easier to train (learn) on.
+
+4.3.2 Convolutional Sampling Beyond
+
+convolution = from maths and m,eans an operation that blends one function with another
+
+In images:
+- one function  = the image (actually grid of numbers lol)
+- the other = the filter/kernel (a small grid of weights)
+- convolving = sliding + multiplying + adding
+
+Basically you slide the kernel over image multiply kernel by image grid covered by the kernel then add them up to output the value of a single pixel....
