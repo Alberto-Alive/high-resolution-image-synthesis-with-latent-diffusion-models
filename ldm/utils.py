@@ -3,9 +3,10 @@
 # maintain an EMA copy (a "smoothed" version of weights) that often samples better
 import os
 import torch
-from safetensors.torch import save_file, load_file
+from safetensors.torch import save_file, load_file #this is a safe/fast format for saving tensors
 
 def ensure_dir(path: str):
+    '''Ensure the directory exists: ex. ensure_dir("checkpoints")'''
     os.makedirs(path, exist_ok=True)
     
 def save_ckpt(path: str, model: torch.nn.Module, optim: torch.optim.Optimizer | None = None, extra: dict | None = None):
@@ -24,7 +25,7 @@ def load_ckpt(path: str, model: torch.nn.Module, optim: torch.optim.Optimizer | 
     return obj
     
 @torch.no_grad()
-def ema_update(ema_model: torch.nnModule, model: torch.nn.Module, decay: float):
+def ema_update(ema_model: torch.nn.Module, model: torch.nn.Module, decay: float):
     msd = model.state_dict()
     for k, v in ema_model.state_dict().items():
         if k in msd:
