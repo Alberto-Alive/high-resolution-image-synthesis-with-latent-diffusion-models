@@ -25,7 +25,7 @@ class ResBlock(nn.Module):
     def forward(self, x):
         return x + self.net(x)
 
-
+# shrink the spatial size (downsample) and learn richer features
 class Down(nn.Module):
     def __init__(self, in_c, out_c):
         super().__init__()
@@ -34,4 +34,16 @@ class Down(nn.Module):
             ResBlock(out_c),
             ResBlock(out_c)
         )
-    def forward(self, x): self.net(x)
+    def forward(self, x): return self.net(x)
+    
+# grow the spatial size (upsample) and refine   
+class Up(nn.Module):
+    def __init__(self, in_c, out_c):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Upsample(scale_factor = 2, mode="nearest"),
+            conv(in_c, out_c),
+            ResBlock(out_c),
+            ResBlock(out_c),
+        )
+    def forward(self, x): return self.net(x)
