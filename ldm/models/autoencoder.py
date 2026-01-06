@@ -10,5 +10,28 @@ import torch.nn.functional as F
 def conv(in_c, out_c, k=3, s=1, p=1):
     return nn.Conv2d(in_c, out_c, kernel_size=k, stride=s, padding=p)
 
+# process the image/feature map without changing its size
+class ResBlock(nn.Module):
+    def __init__(self, c):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.GroupNorm(32, c),
+            nn.SiLU(),
+            conv(c, c),
+            nn.GroupNorm(32, c),
+            nn.SiLU(),
+            conv(c, c),
+        )
+    def forward(self, x):
+        return x + self.net(x)
 
 
+class Down(nn.Module):
+    def __init__(self, in_c, out_c):
+        super().__init__()
+        self.net = nn.Sequential(
+            conv(in_c, out_c, 4,2, 1),
+            ResBlock(out_c),
+            ResBlock(out_c)
+        )
+    def forward(self, x): self.net(x)
