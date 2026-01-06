@@ -161,7 +161,7 @@ Latent Diffusion Models are generative models that learn to create images by lea
 
 Let's explain the formula:
 
-![Ldm](image-1.png)
+![Ldm](public/image-1.png)
 
 1) Ldm 
 Ldm = "loss" (a number you minimize during training)
