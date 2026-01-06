@@ -47,3 +47,25 @@ class Up(nn.Module):
             ResBlock(out_c),
         )
     def forward(self, x): return self.net(x)
+    
+    
+class Encoder(nn.Module):
+    def __init__(self, z_channels=4, base=128):
+        super().__init__()
+        self.inp = conv(3, base)
+        self.d1 = Down(base, base)
+        self.d2 = Down(base, base*2)
+        self.d3 = Down(base*2, base*4)
+        self.mid = nn.Sequential(ResBlock(base*4), ResBlock(base*4))
+        self.out = nn.Sequential(
+            nn.GroupNorm(32, base *4),
+            nn.SiLU(),
+            conv(base*4, z_channels*2, 3, 1,1)
+        )
+    def forward(self, x):
+        x = self.inp(x)
+        x = self.d1(x)
+        x = self.d2(x)
+        x = self.d3(x)
+        x = self.mid(x)
+        return self.out(x)
