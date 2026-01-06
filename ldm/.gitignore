@@ -1,0 +1,110 @@
+############################################
+# OS / Editor / IDE
+############################################
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+.vscode/
+.idea/
+*.iml
+
+############################################
+# Python
+############################################
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtualenv / Conda
+.venv/
+venv/
+ENV/
+env/
+conda-meta/
+*.conda
+*.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+############################################
+# PyTorch / ML artifacts
+############################################
+# Checkpoints / weights
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# Training outputs
+checkpoints*/
+outputs*/
+samples*/
+runs*/
+wandb*/
+logs*/
+tb_logs*/
+lightning_logs*/
+
+# Profiling / traces
+*.prof
+*.trace
+nsys-rep/
+nsys-rep.*
+
+
+############################################
+# Data (keep out of git)
+############################################
+data/
+datasets/
+images/
+todo
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+
+############################################
+# Caches / downloads
+############################################
+.cache/
+tmp/
+temp/
+
+# Hugging Face / transformers caches (common)
+.huggingface/
+hf_cache/
+transformers_cache/
+torch_cache/
+
+# Torch compile / extensions
+torch_extensions/
+~/.torch/
+*.pkl
+
+############################################
+# Logs / misc
+############################################
+*.log
+*.out
+
+############################################
+# Windows Python build artifacts
+############################################
+*.dll
+*.lib
+*.exp
+
+############################################
+# Optional: keep empty dirs
+############################################
+!.gitkeep
