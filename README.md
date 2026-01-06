@@ -112,7 +112,7 @@ L2 = Euclidean length (straight length ... the squared version for loss)
 ∥e∥2​=sqrt(i∑​(ei​)2​)
 
 
-![Why the name L1?](image.png)
+![Why the name L1?](public/image.png)
 
 
 So using L1/L2 you often get blurry output because the model tries to be right on every pixel and somethimes it can't do that so it averages out details.
