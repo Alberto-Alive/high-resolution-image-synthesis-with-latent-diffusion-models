@@ -161,7 +161,7 @@ Latent Diffusion Models are generative models that learn to create images by lea
 
 Let's explain the formula:
 
-![Ldm](image-1.png)
+![Ldm](public/image-1.png)
 
 1) Ldm 
 Ldm = "loss" (a number you minimize during training)
@@ -216,11 +216,11 @@ Because training is about finding the best θ (model parameters) that minimize t
 The forward process creates xt from x and ϵ.
 
 7) ∥⋅∥2​2​ (squared L2 norm)
-![formula](image-2.png)
+![formula](public/image-2.png)
 
 This means: take the difference at every pixel/channel, square it and sum it up. Is simply the mean squared error.
 
-![formula](image-3.png)
+![formula](public/image-3.png)
 The latent diffusion loss is the average squared error between the true noise ϵ and the model's predicted noise, when the model is given a noisy latent latent zt and timestep t.
  
 **Personal Thoughts so far**
@@ -237,7 +237,7 @@ Because conditioning beyond simple class labels hasn't been explored much for di
 
 
 Let's debunk the maths formulas:
-![formula](image-4.png)
+![formula](public/image-4.png)
 
 Meaning: we run the condition y through an encoder τ to turn it into a table of numbers
 
@@ -271,7 +271,7 @@ Results: high precision (outputs usually look legit as there are not many broken
 4.3 Conditional Latent Diffusion
 
 4.3.1 Transformer Encoders for LDMs
-![KL Divergence](image-5.png) used to keep the latent codes looking roughly Gaussian
+![KL Divergence](public/image-5.png) used to keep the latent codes looking roughly Gaussian
 
 - is a way to measure how different one distribution is from another and here is used as a penalty during training which constraints the latent codes withing Gaussian distribution which is easier to train (learn) on.
 
