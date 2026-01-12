@@ -64,6 +64,7 @@ class Up(nn.Module):
         x = self.rb1(x, temb)
         x = self.rb2(x, temb)
         return x
+    
 class UNetEps(nn.Module):
     def __init__(self, in_ch=4, base=256, tdim=512):
         super().__init__()
