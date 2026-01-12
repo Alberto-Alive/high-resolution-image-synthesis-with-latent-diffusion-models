@@ -120,4 +120,10 @@ class AutoencoderKL(nn.Module):
         zrec = self.decode(z)
         return xrec, mean, logvar
     
+def kl_loss(mean, logvar):
+    # calculare regularization penalty (Kullback–Leibler divergence)
+    return 0.5 * torch.mean(torch.sum(mean**2 + torch.exp(logvar) - 1.0 - logvar, dim=[1,2,3]))
 
+
+def recon_loss(x, xrec):
+    return F.l1_loss(xrec, x)
