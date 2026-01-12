@@ -21,3 +21,20 @@ class SinusoidalTimeEmb(nn.Module):
             emb = F.pad(emb, (0,1))
         return emb
     
+class ResBlock(nn.Module):
+    def __init__(self, c, tdim):
+        super().__init__()
+        self.norm1 = nn.GroupNorm(32, c)
+        self.conv1 = conv(c, c)
+        self.norm2 = nn.GroupNorm(32, c)
+        self.conv2 = conv(c, c)
+        self.time = nn.Sequential(nn.SiLU(), nn.Linear(tdim, c))
+        
+    def forward(self, x, temb):
+        h = self.conv1(F.silu(self.norm(x)))
+        h = h+ self.time(temb).unsqueeze(-1).unsqueeze(-1)
+        h = self.conv2(F.silu(self.norm2(h)))
+        return x + h
+
+
+        
