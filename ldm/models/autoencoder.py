@@ -69,3 +69,55 @@ class Encoder(nn.Module):
         x = self.d3(x)
         x = self.mid(x)
         return self.out(x)
+    
+
+class Decoder(nn.Module):
+    def __init__(self, z_channels=4, base=128):
+        super().__init__()
+        self.inp = conv(z_channels, base*4)
+        self.mid = nn.Sequential(ResBlock(base*4), ResBlock(base*4))
+        self.u3 = Up(base*4, base*2)
+        self.u2 = Up(base*2, base)
+        self.u1 = Up(base, base)
+        self.out = nn.Sequential(
+            nn.GroupNorm(32, base),
+            nn.SiLU(),
+            conv(base, 3, 3, 1, 1),
+            nn.Tanh()
+        )
+        
+    def forward(self, z):
+        z = self.inp(z)
+        z = self.mid(z)
+        z = self.u3(z)
+        z = self.u2(z)
+        z = self.u1(z)
+        return self.out(z)
+    
+class AutoencoderKL(nn.Module):
+    def __init__(self, z_channels=4, base=128):
+        super().__init__()
+        self.enc = Encoder(z_channels=z_channels, base=base)
+        self.dec = Decoder(z_channels=z_channels, base=base)
+    
+    def encode(self, x):
+        h = self.enc(x)
+        mean, logvar = torch.chunk(h, 2, dim=1)
+        logvar = torch.clamp(logvar, -30.0, 20.0)
+        return mean, logvar
+    
+    def reparameterize(self, mean, logvar):
+        std = torch.exp(0.5 * logvar)
+        eps = torch.randn_like(std)
+        return mean + eps * std
+    
+    def decode(self, z):
+        return self.dec(z)
+    
+    def forward(self, x):
+        mean, logvar = self.encode(x)
+        z = self.reparameterize(mean, logvar)
+        zrec = self.decode(z)
+        return xrec, mean, logvar
+    
+
