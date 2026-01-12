@@ -37,4 +37,18 @@ class ResBlock(nn.Module):
         return x + h
 
 
+class Down(nn.Module):
+    def __init__(self, c, tdim):
+        super().__init__()
+        self.rb1 = ResBlock(c, tdim)
+        self.rb2 = ResBlock(c, tdim)
+        self.down = conv(c, c, 4, 2, 1)
         
+    def forward(self, x, temb):
+        x = self.rb1(x, temb)     
+        x = self.rb2(x, temb)
+        skip = x
+        x = self.down(x)
+        return x, skip
+
+  
