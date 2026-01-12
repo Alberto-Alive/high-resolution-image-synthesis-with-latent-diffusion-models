@@ -64,4 +64,40 @@ class Up(nn.Module):
         x = self.rb1(x, temb)
         x = self.rb2(x, temb)
         return x
-        
+class UNetEps(nn.Module):
+    def __init__(self, in_ch=4, base=256, tdim=512):
+        super().__init__()
+        self.time_emb = nn.Sequential(
+            SinusoidalTimeEmb(tdim),
+            nn.Linear(tdim, tdim),
+            nn.SiLU(),
+            nn.Linear(tdim, tdim),
+        )
+
+        self.inp = conv(in_ch, base)
+        self.d1 = Down(base, tdim)
+        self.d2 = Down(base, tdim)
+        self.mid1 = ResBlock(base, tdim)
+        self.mid2 = ResBlock(base, tdim)
+        self.u2 = Up(base, tdim)
+        self.u1 = Up(base, tdim)
+
+        self.out = nn.Sequential(
+            nn.GroupNorm(32, base),
+            nn.SiLU(),
+            conv(base, in_ch),
+        )
+
+    def forward(self, x, t):
+        temb = self.time_emb(t)
+
+        x = self.inp(x)
+        x, s1 = self.d1(x, temb)
+        x, s2 = self.d2(x, temb)
+
+        x = self.mid1(x, temb)
+        x = self.mid2(x, temb)
+
+        x = self.u2(x, s2, temb)
+        x = self.u1(x, s1, temb)
+        return self.out(x)
