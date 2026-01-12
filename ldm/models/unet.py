@@ -51,4 +51,17 @@ class Down(nn.Module):
         x = self.down(x)
         return x, skip
 
-  
+class Up(nn.Module):
+    def __init__(self, c, tdim):
+        super().__init__()
+        self.up = nn.Sequential(nn.Upsample(scale_factor=2, mode="nearest"),conv(c,c))
+        self.rb1 = ResBlock(c, tdim)
+        self.rb2 = ResBlock(c, tdim)
+        
+    def forward(self, x, skip, temb):
+        x = self.up(x)
+        x = x + skip
+        x = self.rb1(x, temb)
+        x = self.rb2(x, temb)
+        return x
+        
