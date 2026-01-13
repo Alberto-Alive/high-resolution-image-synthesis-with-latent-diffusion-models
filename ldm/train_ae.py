@@ -14,3 +14,6 @@ def main(args):
     dl = DataLoader(ds, batch_size=args.batch, shuffle=True, num_workers=0, pin_memory=True)
     
     ae = AutoencoderKL(z_channels=args.z)
+    # another place where we want to keep order close to disorder as this relation helps the 
+    # model generalise and not overfit via the weight_decay mechanism that pulls weights towards 0
+    opt = torch.optim.AdamW(ae.parameters(), lr=args.lr, weight_decay=1e-4)
