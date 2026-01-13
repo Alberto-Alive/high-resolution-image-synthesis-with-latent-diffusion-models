@@ -19,3 +19,38 @@ def main(args):
     # similar to how we add gaussian noise to images - we need this order-disorder relationship
     # in fact is nothing magic given the physical reality we live in, we need to find / create order 
     opt = torch.optim.AdamW(ae.parameters(), lr=args.lr, weight_decay=1e-4)
+    scaler = torch.cuda.amp.GradScaler(enabled=(device=="cuda"))
+    
+    ensure_dir(args.out)
+    
+    step = 0
+    ae.train()
+    for epoch in range(args.epochs):
+        pbar = tqdm(dl, desc=f"AE epoch {epoch}")
+        for x in pbar:
+            x = x.to(device, non_blocking=True)
+            
+            with torch.cuda.amp.autocast(enabled=(device == "cuda")):
+                xrec, mean, logvar = ae(x)
+                rloss = recon_loss(x, xrec)
+                kl = kl_loss(mean, logvar)
+                loss = rloss + args.kl_weight * kl
+
+            opt.zero_grad(set_to_none=True)
+            scaler.scale(loss).backward()
+            scaler.step(opt)
+            scaler.update()
+            
+            if step % 50 == 0:
+                pbar.set_postfix(loss=float(loss), recon=float(rloss), kl=float(kl))
+
+            if step % args.save_every == 0 and step > 0:
+                save_ckpt(f"{args.out}/ae_step{step}.pt", ae, opt, extra={"step": step, "epoch": epoch})
+
+            step += 1
+    save_ckpt(f"{args.out}/ae_final.pt", ae, opt, extra={"step": step, "epoch": args.epochs})
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data", typ=str, required=True)
+    

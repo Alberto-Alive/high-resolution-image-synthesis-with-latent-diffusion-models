@@ -8,7 +8,7 @@ def conv(in_c, out_c, k=3, s=1, p=1):
     return nn.Conv2d(in_c, out_c, k, s, p)
 
 class SinusoidalTimeEmb(nn.Module):
-    def __init__(self):
+    def __init__(self, dim):
         super().__init__()
         self.dim = dim
         
