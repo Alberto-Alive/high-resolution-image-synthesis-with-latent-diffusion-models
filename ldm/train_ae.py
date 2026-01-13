@@ -51,6 +51,19 @@ def main(args):
     save_ckpt(f"{args.out}/ae_final.pt", ae, opt, extra={"step": step, "epoch": args.epochs})
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--data", typ=str, required=True)
-    
+    p = argparse.ArgumentParser()
+    p.add_argument("--data", typ=str, required=True)
+    p.add_argument("--ldm_ckp", typ=str, required=True)
+    p.add_argument("--out", type=str, default="samples")
+    p.add_argument("--size", type=int, default=256)
+    p.add_argument("--n", type=int, default=8)
+    p.add_argument("--T", type=int, default=1000)
+
+    p.add_argument("--z", type=int, default=4)
+    p.add_argument("--ae_base", type=int, default=128)
+
+    p.add_argument("--unet_base", type=int, default=256)
+    p.add_argument("--tdim", type=int, default=512)
+    p.add_argument("--latent_scale", type=float, default=1.0)
+    args = p.parse_args()
+    main(args)
