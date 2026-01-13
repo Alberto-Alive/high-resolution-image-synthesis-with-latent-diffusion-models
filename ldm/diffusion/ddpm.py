@@ -19,6 +19,7 @@ class DDPM:
         return sqrt_ab * x0 + sqrt_om * noise, noise
     
     def loss(self, x0, t):
+        '''Here we just measure how far off was the model in distinguishing/predicting noise from actual data'''
         xt, eps =self.q_sample(x0, t)
         eps_pred =self.eps_model(xt, t)
         return F.mse_loss(eps_pred, eps)
