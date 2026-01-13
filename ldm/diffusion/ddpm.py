@@ -27,3 +27,27 @@ class DDPM:
     @torch.no_grad()
     def p_sample(self, xt, t_int):
         b = xt.shape[0]
+        t = torch.full((b,), t_int, device=xt.device, dtype=torch.long)
+        
+        betas_t = self.c["betas"][t].view(-1,1,1,1)
+        sqrt_one_minus_ab_t =self.c["sqrt_one_minus_alphas_cumprod"][t].view(-1,1,1,1)
+        eps_pred = self.eps_model(xt, t)
+        
+        mean = sqrt_recip_alpha_t * (xt - betas_t * eps_pred / sqrt_one_minus_ab_t)
+        
+        if t_int ==0:
+            return mean
+        
+        # as mentioned above the funny thing about order is that it becomes creative as it's affected by disorder.
+        # every time image is denoised a little noise is added (except at t_int ==0 when image is finished) to aid creativity.
+        # I do find this beautiful
+        var = self.c["posterior_variance"][t].view(-1,1,1,1)
+        noise = torch.randn_like(xt)
+        return mean + torch.sqrt(var) * noise
+    
+    @torch.no_grad()
+    def sample(self, shape, T: int):
+        x = torch.randn(shape, device=self.c["betas"].device)
+        for t in reversed(range(T)):
+            x = self.p_sample(x, t)
+        return x
