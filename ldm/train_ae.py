@@ -16,4 +16,6 @@ def main(args):
     ae = AutoencoderKL(z_channels=args.z)
     # another place where we want to keep order close to disorder as this relation helps the 
     # model generalise and not overfit via the weight_decay mechanism that pulls weights towards 0
+    # similar to how we add gaussian noise to images - we need this order-disorder relationship
+    # in fact is nothing magic given the physical reality we live in, we need to find / create order 
     opt = torch.optim.AdamW(ae.parameters(), lr=args.lr, weight_decay=1e-4)
