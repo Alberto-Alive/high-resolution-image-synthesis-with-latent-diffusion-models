@@ -78,4 +78,22 @@ def main(args):
     
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    pa
+    parser.add_argument("--data", type=str, required=True)
+    parser.add_argument("--ae_ckpt", type=str, required=True)
+    parser.add_argument("--out", type=str, default="checkpoints_ldm")
+    parser.add_argument("--size", type=int, default=256)
+    parser.add_argument("--batch", type=int, default=16)
+    parser.add_argument("--epochs", type=int, default=20)
+    parser.add_argument("--lr", type=float, default=1e-4)
+    parser.add_argument("--T", type=int, default=1000)
+
+    parser.add_argument("--z", type=int, default=4)
+    parser.add_argument("--ae_base", type=int, default=128)
+
+    parser.add_argument("--unet_base", type=int, default=256)
+    parser.add_argument("--tdim", type=int, default=512)
+
+    parser.add_argument("--latent_scale", type=float, default=1.0)  # you can tune later
+    parser.add_argument("--ema", type=float, default=0.999)
+
+    parser.add_argument("--save_every", type=int, default=2000)
