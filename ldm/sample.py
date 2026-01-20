@@ -13,4 +13,6 @@ def nmain(args):
     device = "cuda" if torch.cuda.is_available() else "cpu"
     ensure_dir(args.out)
     
+    ae = AutoencoderKL(z_channels=args.z, base=args.ae_base).to(device)
+    
     
