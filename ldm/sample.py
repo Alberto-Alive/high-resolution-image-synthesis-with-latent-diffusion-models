@@ -15,4 +15,5 @@ def nmain(args):
     
     ae = AutoencoderKL(z_channels=args.z, base=args.ae_base).to(device)
     
-    
+    load_ckpt(args.ae_ckpt, ae, map_location=device)
+    ae.eval()
