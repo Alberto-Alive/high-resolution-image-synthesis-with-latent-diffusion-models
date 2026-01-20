@@ -51,7 +51,8 @@ def main(args):
             with torch.no_grad():
                 z0 = encode_latents(ae, x, scale=args.latent_scale)
                 
-            t = torch.randint(0, args.T, (z0.shape[0],) device=device, dtype=torch.long)
+            t = torch.randint(0, args.T, (z0.shape[0],), device=device, dtype=torch.long)
+
             with torch.cuda.amp.autocast(enabled=(device == "cuda")):
                 loss = ddpm.loss(z0, t)
             
