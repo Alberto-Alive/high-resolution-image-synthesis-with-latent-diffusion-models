@@ -97,3 +97,7 @@ if __name__ == "__main__":
     parser.add_argument("--ema", type=float, default=0.999)
 
     parser.add_argument("--save_every", type=int, default=2000)
+    
+    args = parser.parse_args()
+    
+    main(args)
