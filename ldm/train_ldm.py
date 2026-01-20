@@ -69,3 +69,13 @@ def main(args):
             if step % args.save_every == 0 and step > 0:
                 save_ckpt(f"{args.out}/ldm_step{step}.pt", unet, opt, extra={"step": step, "epoch": epoch})
                 save_ckpt(f"{args.out}/ldm_ema_step{step}.pt", unet_ema, None, extra={"step": step, "epoch": epoch})
+
+            step += 1
+            
+    save_ckpt(f"{args.out}/ldm_final.pt", unet, opt, extra={"step": step, "epoch": args.epochs})
+    save_ckpt(f"{args.out}/ldm_ema_final.pt", unet_ema, None, extra={"step": step, "epoch": args.epochs})
+    
+    
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    pa
