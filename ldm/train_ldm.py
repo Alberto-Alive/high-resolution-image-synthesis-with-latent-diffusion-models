@@ -34,6 +34,38 @@ def main(args):
     unet_ema.load_state_dict(unet.state_dict())
     
     opt = torch.optim.AdamW(unet.parameters(), lr=args.lr, weight_decay=1e-4)
-    scalar = torch.cuda.amp.GradScaler(enabled=(device == "cuda"))
+    scaler = torch.cuda.amp.GradScaler(enabled=(device == "cuda"))
     
-    betas =linear_beta_s
+    betas =linear_beta_schedule(args.T, device=device)
+    consts = make_ddpm_constants(betas)
+    ddpm = DDPM(unet, consts)
+    
+    ensure_dir(args.out)
+    
+    step = 0
+    unet.train()
+    for epoch in range(args.epochs):
+        pbar = tqdm(dl, desc=f"LDM epoch {epoch}")
+        for x in pbar:
+            x = x.to(device, non_blocking=True)
+            with torch.no_grad():
+                z0 = encode_latents(ae, x, scale=args.latent_scale)
+                
+            t = torch.randint(0, args.T, (z0.shape[0],) device=device, dtype=torch.long)
+            with torch.cuda.amp.autocast(enabled=(device == "cuda")):
+                loss = ddpm.loss(z0, t)
+            
+            opt.zero_grad(set_to_none=True)
+            scaler.scale(loss).backward()
+            scaler.step(opt)
+            scaler.update()
+            
+            ema_update(unet_ema, unet, decay=args.ema)
+            
+            
+            if step % 50 == 0:
+                pbar.set_postfix(loss=float(loss))
+                
+            if step % args.save_every == 0 and step > 0:
+                save_ckpt(f"{args.out}/ldm_step{step}.pt", unet, opt, extra={"step": step, "epoch": epoch})
+                save_ckpt(f"{args.out}/ldm_ema_step{step}.pt", unet_ema, None, extra={"step": step, "epoch": epoch})
